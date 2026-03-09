@@ -7,6 +7,7 @@ import QuizResultsVariationsDecorator, {
   QuizResultsPrimaryDecorator,
   QuizResultsWithSummaryDecorator,
 } from './QuizResultsDecorator';
+import ResultsTransformerStory from './ResultsTransformer';
 
 const meta: Meta<typeof ResultContainer> = {
   title: 'Quiz/CioQuiz/Results/QuizResultsPage',
@@ -51,4 +52,8 @@ export const QuizResultsPageWithSummary: Story = {
     </div>
   ),
   decorators: [(story) => QuizResultsWithSummaryDecorator(story)],
+};
+
+export const ResultsTransformer: Story = {
+  render: () => <ResultsTransformerStory />,
 };

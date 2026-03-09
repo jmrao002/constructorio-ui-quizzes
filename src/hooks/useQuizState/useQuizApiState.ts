@@ -1,5 +1,5 @@
 import ConstructorIOClient from '@constructor-io/constructorio-client-javascript';
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useRef } from 'react';
 import {
   ActionAnswerQuestion,
   ActionQuizAPI,
@@ -39,6 +39,8 @@ const useQuizApiState: UseQuizApiState = (
 ) => {
   const [quizApiState, dispatchApiState] = useReducer(apiReducer, initialState);
   const { quizId, quizVersionId: quizVersionIdProp, resultsPageOptions, callbacks } = quizOptions;
+  const resultsPageOptionsRef = useRef(resultsPageOptions);
+  resultsPageOptionsRef.current = resultsPageOptions;
   const {
     queryItems,
     queryAttributes,
@@ -47,14 +49,20 @@ const useQuizApiState: UseQuizApiState = (
     quizVersionId: quizVersionIdFromParam,
   } = useQueryParams();
   const dispatchQuizResults = async () => {
+    const currentResultsPageOptions = resultsPageOptionsRef.current;
     try {
-      const quizResults = await getQuizResults(cioClient, quizId, {
+      let quizResults = await getQuizResults(cioClient, quizId, {
         answers: quizLocalState.answers,
-        resultsPerPage: resultsPageOptions?.numResultsToDisplay,
+        resultsPerPage: currentResultsPageOptions?.numResultsToDisplay,
         quizVersionId: quizLocalState.quizVersionId,
         quizSessionId: quizLocalState.quizSessionId,
-        ...resultsPageOptions?.requestConfigs,
+        ...currentResultsPageOptions?.requestConfigs,
       });
+
+      if (currentResultsPageOptions?.resultsTransformer && isFunction(currentResultsPageOptions.resultsTransformer)) {
+        quizResults = currentResultsPageOptions.resultsTransformer(quizResults);
+      }
+
       // Set quiz results state
       dispatchApiState({
         type: QuizAPIActionTypes.SET_QUIZ_RESULTS,

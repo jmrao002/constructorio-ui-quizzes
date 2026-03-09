@@ -84,11 +84,14 @@ export type QuizResultsRequestConfigs = Omit<
   keyof QuizzesParameters | 'page' | 'resultsPerPage'
 >;
 
+export type ResultsTransformer = (results: QuizResultsResponse) => QuizResultsResponse;
+
 export interface ResultsPageOptions {
   numResultsToDisplay?: number;
   favoriteItems?: string[];
   showShareResultsButton?: boolean;
   requestConfigs?: QuizResultsRequestConfigs;
+  resultsTransformer?: ResultsTransformer;
 }
 
 export interface QuestionsPageOptions {
