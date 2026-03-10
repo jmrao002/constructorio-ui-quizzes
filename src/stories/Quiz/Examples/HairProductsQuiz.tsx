@@ -32,7 +32,7 @@ const resultsTransformer = (quizResults: QuizResultsResponse): QuizResultsRespon
 
 export default function HairProductsQuizStory() {
   const quizProps: IQuizProps = {
-    apiKey: 'key_86qjDylE6TxjxYKA',
+    apiKey: 'key_86qjDylE6TxjxYKA', // cspell:disable-line
     quizId: 'my-hair-products-quiz-1-mr-test',
     resultsPageOptions: {
       resultsTransformer,
@@ -61,9 +61,7 @@ export default function HairProductsQuizStory() {
             <ControlBar ctaButtonText={currentQuestionData?.cta_text || undefined} />
           </>
         ) : (
-          <>
-            <ResultContainer resultCardOptions={resultCardOptions} onShare={() => {}} />
-          </>
+          <ResultContainer resultCardOptions={resultCardOptions} onShare={() => {}} />
         )}
       </QuizContext.Provider>
     </div>

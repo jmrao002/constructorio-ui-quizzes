@@ -1,8 +1,7 @@
 import React from 'react';
 import QuizContext from '../../../../components/CioQuiz/context';
 import ResultContainer from '../../../../components/ResultContainer/ResultContainer';
-import { useMockContextValue } from '../../tests/mocks';
-import { resultCardOptions } from '../../tests/mocks';
+import { useMockContextValue, resultCardOptions } from '../../tests/mocks';
 import { QuizResultDataPartial } from '../../../../types';
 
 const mockResults: QuizResultDataPartial[] = [
@@ -47,22 +46,26 @@ const transformedResults: QuizResultDataPartial[] = (() => {
 
 function Panel({ results, label }: { results: QuizResultDataPartial[]; label: string }) {
   const contextValue = useMockContextValue();
-  const patchedContextValue = {
-    ...contextValue,
-    state: {
-      ...contextValue.state,
-      quiz: {
-        ...contextValue.state.quiz,
-        results: {
-          ...contextValue.state.quiz.results!,
-          response: {
-            ...contextValue.state.quiz.results!.response!,
-            results,
+  const patchedContextValue = React.useMemo(
+    () => ({
+      ...contextValue,
+      state: {
+        ...contextValue.state,
+        quiz: {
+          ...contextValue.state.quiz,
+          results: {
+            ...contextValue.state.quiz.results!,
+            response: {
+              ...contextValue.state.quiz.results!.response!,
+              results,
+            },
           },
         },
       },
-    },
-  };
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [results]
+  );
 
   return (
     <div style={{ flex: 1, minWidth: 0 }}>

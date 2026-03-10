@@ -59,7 +59,10 @@ const useQuizApiState: UseQuizApiState = (
         ...currentResultsPageOptions?.requestConfigs,
       });
 
-      if (currentResultsPageOptions?.resultsTransformer && isFunction(currentResultsPageOptions.resultsTransformer)) {
+      if (
+        currentResultsPageOptions?.resultsTransformer &&
+        isFunction(currentResultsPageOptions.resultsTransformer)
+      ) {
         quizResults = currentResultsPageOptions.resultsTransformer(quizResults);
       }
 
